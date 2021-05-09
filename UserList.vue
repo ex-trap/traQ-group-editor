@@ -3,7 +3,7 @@
     <ul class="uk-list uk-list-divider" :style="{'height': height + 'px', 'overflow-y': 'scroll'}">
       <li class="user" :key="user.userId" v-for="user in users" @click="$emit('userClick', user)">
         <div class="user-icon-wrap">
-          <div class="user-icon" :style="`background-image: url(https://q.trap.jp/api/1.0/public/icon/${user.name})`" alt=""></div>
+          <div class="user-icon" :style="`background-image: url(https://ex-traq.emoine.tech/api/v3/public/icon/${user.name})`" alt=""></div>
         </div>
         <div class="user-name">@{{user.name}}</div>
       </li>

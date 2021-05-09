@@ -2,7 +2,7 @@
   <div class="container">
     <div v-if="!me" class="content">
       <div uk-grid>
-        <h1 class="uk-margin-top uk-width-1-1">traQ グループ編集ツール</h1>
+        <h1 class="uk-margin-top uk-width-1-1">ex-traQ グループ編集ツール</h1>
         <div class="uk-text-lead">
           ログインしていません.
         </div>
@@ -13,7 +13,7 @@
     </div>
     <div class="content uk-margin-top" v-else>
       <div uk-grid>
-        <h1 class="uk-margin-top uk-width-1-1">traQ グループ編集ツール</h1>
+        <h1 class="uk-margin-top uk-width-1-1">ex-traQ グループ編集ツール</h1>
         <div class="uk-width-1-1">
           <div v-if="groups.length > 0">
             <div uk-grid>
@@ -210,10 +210,6 @@
                     alert('編集するグループを選択してください')
                     return
                 }
-                if (this.curGroup.type === 'grade') {
-                    alert('学年のグループは編集できません')
-                    return
-                }
                 if (this.newGroupInfo !== null) {
                     if (confirm(`変更内容を確認してください。\n  グループ名: ${this.newGroupInfo.name ? this.newGroupInfo.name : this.curGroup.name + "(未変更)"}\n  グループの説明: ${this.newGroupInfo.description ? this.newGroupInfo.description : this.curGroup.description + "(未変更)"}`)) {
                         await this.api?.editUserGroup(this.curGroup!.id, this.newGroupInfo)
@@ -235,10 +231,6 @@
             async addAdmin() {
                 if (!this.curGroup) {
                     alert('編集するグループを選択してください')
-                    return
-                }
-                if (this.curGroup.type === 'grade') {
-                    alert('学年のグループは編集できません')
                     return
                 }
 
@@ -264,11 +256,6 @@
                 }
             },
             async deleteGroup(group: UserGroup) {
-                if (group.type === 'grade') {
-                    alert('学年のグループは編集できません')
-                    return
-                }
-
                 if (confirm(`${group.name}をグループ一覧から削除しますか？`)) {
                     await this.api?.deleteUserGroup(group.id)
                         .then(_ => {
@@ -286,12 +273,6 @@
             },
             async addUser() {
                 if (!this.curGroup) return
-
-                if (this.curGroup.type === 'grade') {
-                    alert('学年のグループは編集できません')
-                    return
-                }
-
                 await Promise.all(this.willAddUser.map(user => {
                     return this.api?.addUserGroupMember(this.curGroup!.id, {id: user.id, role: ''})
                 }))
@@ -309,11 +290,6 @@
             },
             async removeUser(user: User) {
                 if (!this.curGroup) return
-
-                if (this.curGroup.type === 'grade') {
-                    alert('学年のグループは編集できません')
-                    return
-                }
 
                 if (confirm(`${user.name}を${this.curGroup.name}から削除しますか？`)) {
                     await this.api?.removeUserGroupMember(this.curGroup.id, user.id)
@@ -341,6 +317,7 @@
                     .then(async (res: { data: { access_token: string } }) => {
                         console.log(res)
                         this.api = new Apis({
+                            basePath: "https://ex-traq.emoine.tech/api/v3",
                             accessToken: res.data.access_token
                         })
                         await this.api.getMe().then((res: AxiosResponse<MyUserDetail>) => {
@@ -353,6 +330,7 @@
             } else {
                 const accessToken = sessionStorage.getItem('access_token')!
                 this.api = new Apis({
+                    basePath: "https://ex-traq.emoine.tech/api/v3",
                     accessToken: accessToken
                 })
                 await this.api.getMe().then((res: AxiosResponse<MyUserDetail>) => {

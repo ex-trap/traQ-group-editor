@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { randomString, pkce } from './utils'
 
-export const CLIENT_ID = process.env.CLIENT_ID || '6Yz1g0FzU2HyPPBuzs35kPb62EKWTs1Ld8Ax'
-export const baseURL = process.env.VUE_APP_API_ENDPOINT || 'https://q.trap.jp/api/v3'
+export const CLIENT_ID = process.env.CLIENT_ID || 'K1xV0kq2UzsmEYYlQzLMEcB56rXZujjn8NDa'
+export const baseURL = process.env.VUE_APP_API_ENDPOINT || 'https://ex-traq.emoine.tech/api/v3'
 axios.defaults.baseURL = baseURL
 axios.defaults.withCredentials = false
 
